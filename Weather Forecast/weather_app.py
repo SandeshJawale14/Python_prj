@@ -1,11 +1,16 @@
+import os
+from dotenv import load_dotenv
 import streamlit as st
 import requests
 
+# Load environment variables (for API key)
+load_dotenv()
+
 # Function to get weather data from OpenWeatherMap API
-def get_weather(city, api_key):
+def get_weather(city, api_key, units="metric"):
     # URL to fetch the weather data from OpenWeatherMap
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = f"{base_url}q={city}&appid={api_key}&units=metric"  # `units=metric` to get temperature in Celsius
+    complete_url = f"{base_url}q={city}&appid={api_key}&units={units}"  # Unit can be metric, imperial, or standard
     response = requests.get(complete_url)
 
     # Check if the request was successful
@@ -38,12 +43,8 @@ def get_weather(city, api_key):
                 "icon": icon
             }
         else:
-            # If 'main' or 'weather' is not in the response, print the response for debugging
-            print(data)  # Print the response to the console (can help with debugging)
             return None
     else:
-        # Handle the error if the API response is not successful
-        print(f"Error fetching data: {response.status_code}")  # Log the status code
         return None
 
 # Streamlit app UI
@@ -52,22 +53,25 @@ def main():
     st.markdown("Enter the city name below to get real-time weather information.")
 
     # Input box for the city name
-    city = st.text_input("City Name", "London")  # Default to London
+    city = st.text_input("Enter City Name", "")  # Empty input by default
 
-    # OpenWeatherMap API key (your provided key)
-    api_key = "88cc679aa867f28dfc12e493b3f4fec1"
+    # Dropdown to select units
+    units = st.selectbox("Select Temperature Units", ["metric (Celsius)", "imperial (Fahrenheit)", "standard (Kelvin)"])
+
+    # OpenWeatherMap API key (loaded from .env)
+    api_key = os.getenv("API_KEY")
 
     # When the user presses the 'Get Weather' button
     if st.button("Get Weather"):
         if city:
             # Fetch weather data
-            weather_data = get_weather(city, api_key)
+            weather_data = get_weather(city, api_key, units=units.split()[0].lower())
             
             if weather_data:
                 # Display weather details
                 st.subheader(f"Weather in {weather_data['city']}")
                 st.image(f"http://openweathermap.org/img/wn/{weather_data['icon']}@2x.png", width=100)
-                st.write(f"**Temperature**: {weather_data['temperature']} °C")
+                st.write(f"**Temperature**: {weather_data['temperature']}°")
                 st.write(f"**Description**: {weather_data['description']}")
                 st.write(f"**Pressure**: {weather_data['pressure']} hPa")
                 st.write(f"**Humidity**: {weather_data['humidity']} %")
@@ -79,3 +83,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

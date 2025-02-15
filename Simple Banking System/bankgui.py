@@ -61,91 +61,92 @@ class BankingSystem:
         self.root.title("Banking System")
         self.root.geometry("600x500")
 
-        # Account Creation Section
-        self.create_account_frame = tk.Frame(root, bg="#f8f8f8")
-        self.create_account_frame.pack(pady=20)
+        # Create a notebook (tabs)
+        self.notebook = ttk.Notebook(root)
+        self.notebook.pack(pady=20, expand=True)
 
+        # Tab for creating an account
+        self.create_account_tab = tk.Frame(self.notebook, bg="#f8f8f8")
+        self.notebook.add(self.create_account_tab, text="Create Account", padding=10)
+
+        # Tab for transactions (Deposit/Withdraw)
+        self.transaction_tab = tk.Frame(self.notebook, bg="#f8f8f8")
+        self.notebook.add(self.transaction_tab, text="Transactions", padding=10)
+
+        # Tab for account information
+        self.info_tab = tk.Frame(self.notebook, bg="#f8f8f8")
+        self.notebook.add(self.info_tab, text="Account Info", padding=10)
+
+        # Account Creation Section
         self.acc_num_label = tk.Label(
-            self.create_account_frame, text="Account Number:", font=("Arial", 14)
+            self.create_account_tab, text="Account Number:", font=("Arial", 14)
         )
         self.acc_num_label.grid(row=0, column=0, padx=20, pady=10)
         self.acc_num_entry = tk.Entry(
-            self.create_account_frame, font=("Arial", 14), width=20
+            self.create_account_tab, font=("Arial", 14), width=20
         )
         self.acc_num_entry.grid(row=0, column=1, padx=20, pady=10)
 
         self.acc_holder_label = tk.Label(
-            self.create_account_frame, text="Account Holder:", font=("Arial", 14)
+            self.create_account_tab, text="Account Holder:", font=("Arial", 14)
         )
         self.acc_holder_label.grid(row=1, column=0, padx=20, pady=10)
         self.acc_holder_entry = tk.Entry(
-            self.create_account_frame, font=("Arial", 14), width=20
+            self.create_account_tab, font=("Arial", 14), width=20
         )
         self.acc_holder_entry.grid(row=1, column=1, padx=20, pady=10)
 
         self.initial_balance_label = tk.Label(
-            self.create_account_frame, text="Initial Balance:", font=("Arial", 14)
+            self.create_account_tab, text="Initial Balance:", font=("Arial", 14)
         )
         self.initial_balance_label.grid(row=2, column=0, padx=20, pady=10)
         self.initial_balance_entry = tk.Entry(
-            self.create_account_frame, font=("Arial", 14), width=20
+            self.create_account_tab, font=("Arial", 14), width=20
         )
         self.initial_balance_entry.grid(row=2, column=1, padx=20, pady=10)
 
         self.create_acc_button = tk.Button(
-            self.create_account_frame,
-            text="Create Account",
-            command=self.create_account,
+            self.create_account_tab, text="Create Account", command=self.create_account
         )
         self.create_acc_button.grid(row=3, columnspan=2, pady=10)
 
         # Transaction Section
-        self.transaction_frame = tk.Frame(root, bg="#f8f8f8")
-        self.transaction_frame.pack(pady=20)
-
         self.trans_acc_num_label = tk.Label(
-            self.transaction_frame, text="Account Number:", font=("Arial", 14)
+            self.transaction_tab, text="Account Number:", font=("Arial", 14)
         )
         self.trans_acc_num_label.grid(row=0, column=0, padx=20, pady=10)
         self.trans_acc_num_entry = tk.Entry(
-            self.transaction_frame, font=("Arial", 14), width=20
+            self.transaction_tab, font=("Arial", 14), width=20
         )
         self.trans_acc_num_entry.grid(row=0, column=1, padx=20, pady=10)
 
         self.amount_label = tk.Label(
-            self.transaction_frame, text="Amount:", font=("Arial", 14)
+            self.transaction_tab, text="Amount:", font=("Arial", 14)
         )
         self.amount_label.grid(row=1, column=0, padx=20, pady=10)
-        self.amount_entry = tk.Entry(
-            self.transaction_frame, font=("Arial", 14), width=20
-        )
+        self.amount_entry = tk.Entry(self.transaction_tab, font=("Arial", 14), width=20)
         self.amount_entry.grid(row=1, column=1, padx=20, pady=10)
 
         self.deposit_button = tk.Button(
-            self.transaction_frame, text="Deposit", command=self.deposit
+            self.transaction_tab, text="Deposit", command=self.deposit
         )
         self.deposit_button.grid(row=2, column=0, padx=20, pady=10)
 
         self.withdraw_button = tk.Button(
-            self.transaction_frame, text="Withdraw", command=self.withdraw
+            self.transaction_tab, text="Withdraw", command=self.withdraw
         )
         self.withdraw_button.grid(row=2, column=1, padx=20, pady=10)
 
         # Account Information Section
-        self.info_frame = tk.Frame(root, bg="#f8f8f8")
-        self.info_frame.pack(pady=20)
-
         self.info_acc_num_label = tk.Label(
-            self.info_frame, text="Account Number:", font=("Arial", 14)
+            self.info_tab, text="Account Number:", font=("Arial", 14)
         )
         self.info_acc_num_label.grid(row=0, column=0, padx=20, pady=10)
-        self.info_acc_num_entry = tk.Entry(
-            self.info_frame, font=("Arial", 14), width=20
-        )
+        self.info_acc_num_entry = tk.Entry(self.info_tab, font=("Arial", 14), width=20)
         self.info_acc_num_entry.grid(row=0, column=1, padx=20, pady=10)
 
         self.info_button = tk.Button(
-            self.info_frame, text="Display Info", command=self.display_info
+            self.info_tab, text="Display Info", command=self.display_info
         )
         self.info_button.grid(row=1, columnspan=2, pady=10)
 
